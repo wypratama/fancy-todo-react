@@ -13,7 +13,7 @@ function listAll (props) {
         </td>
         <td className="col-md-auto d-flex align-items-center">
             <button type="button" className="btn btn-warning btn-sm mr-1" >Edit</button>
-            <button type="button" className="btn btn-success btn-sm mr-1" >Mark As Done</button>
+            {props.el.status ? <button type="button" class="btn btn-danger btn-sm mr-1">Mark  Undone</button> : <button type="button" className="btn btn-success btn-sm mr-1" >Mark As Done</button>}
             <button type="button" className="btn btn-dark btn-sm delbut" >Delete</button>
         </td>
     </tr>

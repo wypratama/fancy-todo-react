@@ -26,6 +26,7 @@ function Landing (props) {
     .then(res => {
       localStorage.setItem('access_token', res.data.access_token)
       props.setPage(<Home />)
+      props.setOnLogin(false)
     })
     .catch(err => {
       console.log(err)
@@ -44,6 +45,7 @@ function Landing (props) {
     .then(res => {
       localStorage.setItem('access_token', res.data.access_token)
       props.setPage(<Home />)
+      props.setOnLogin(false)
     })
     .catch(err => {
       console.log(err)

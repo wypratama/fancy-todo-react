@@ -1,13 +1,13 @@
 import React, { useState, useEffect } from 'react';
 import Landing from './Landing'
 import Home from './Home'
-import './App.css';
+// import './App.css';
 
 function App() {
   const auth = localStorage.getItem('access_token')
   const [page, setPage] = useState('Landing')
   useEffect(()=> {
-    auth ? setPage(<Home />) : setPage(<Landing />)
+    auth ? setPage(<Home />) : setPage(<Landing setPage={setPage} />)
   }, [auth])
   
   return (

@@ -1,25 +1,88 @@
 import React, { useState } from 'react';
+import Home from './Home'
+import axios from './axios'
 
-function Landing () {
+function Landing (props) {
   const [onLog, setLog] = useState(true)
-  const login = (data) => {
-    fetch()
+  const [emailLogData, setEmailLogData] = useState()
+  const [passwordLogData, setPasswordLogData] = useState()
+  const [nameRegData, setNameRegData] = useState()
+  const [emailRegData, setEmailRegData] = useState()
+  const [passwordRegData, setPasswordRegData] = useState()
+  const emailLog = (e) => { setEmailLogData(e.target.value) }
+  const passwordlog = (e) => { setPasswordLogData(e.target.value) }
+  const namereg = (e) => { setNameRegData(e.target.value) }
+  const emailreg = (e) => { setEmailRegData(e.target.value) }  
+  const passwordreg = (e) => { setPasswordRegData(e.target.value) }
+  const login = (e) => {
+    e.preventDefault()
+    const data = { email: emailLogData, password: passwordLogData}
+    // console.log(data)
+    axios({
+      url: '/login',
+      method: 'POST',
+      data: data
+    })
+    .then(res => {
+      localStorage.setItem('access_token', res.data.access_token)
+      props.setPage(<Home />)
+    })
+    .catch(err => {
+      console.log(err)
+    })
   }
-  const onSignIn = (googleUser) => {
-    // const id_token = googleUser.getAuthResponse().id_token;
+  const register = (e) => {
+    e.preventDefault()
+    const data = {name: nameRegData, 
+                  email: emailRegData, 
+                  password: passwordRegData}
+    axios({
+      method: 'POST',
+      url: '/register',
+      data: data
+    })
+    .then(res => {
+      localStorage.setItem('access_token', res.data.access_token)
+      props.setPage(<Home />)
+    })
+    .catch(err => {
+      console.log(err)
+    })
   }
+  // const onSignIn = (googleUser) => {
+  //   console.log('signed in')
+  //   const id_token = googleUser.getAuthResponse().id_token;
+  //   axios({
+  //     method: 'POST',
+  //     url: '/google-login',
+  //     data: {
+  //         id_token
+  //     }
+  //   })
+  //   .then(res => {
+  //       localStorage.setItem('access_token', res.data.access_token)
+  //       props.setPage(<Home />)
+  //   })
+  //   .catch(err => {
+
+  //   })
+  //   .then(_=> {
+
+  //   })
+
+  // }
 
   if (onLog) {
     return (
-      <div className="mt-4" id="landing">
+      <div className="mt-4" id="landing(e)">
       <form id="formlogin" onSubmit={login}>
         <div className="form-group">
           <label htmlFor="emaillog">Email address</label>
-          <input type="email" className="form-control" id="emaillog" />
+          <input type="email" className="form-control" onChange={emailLog} />
         </div>
         <div className="form-group mb-2">
           <label htmlFor="passwordlog">Password</label>
-          <input type="password" className="form-control" id="passwordlog"/>
+          <input type="password" className="form-control" onChange={passwordlog}/>
           <small id="helplog" className="form-text text-muted" style={{display: 'none'}}></small>
         </div>
         
@@ -35,7 +98,7 @@ function Landing () {
         <div className="form-text text-muted text-center mt-2 mb-3">
           <small>- or login with your google account -</small>
         </div>
-        <div className="g-signin2 mt-2" data-onsuccess={onSignIn}></div>
+        <div className="g-signin2 mt-2" data-onsuccess="onSignIn"></div>
         {/* <div id="error-log">
         </div> */}
       </form>
@@ -45,18 +108,18 @@ function Landing () {
     return (
       <div className="mt-4" id="landing">
   
-        <form id="formregister">
+        <form onSubmit={register}>
           <div className="form-group">
               <label htmlFor="namereg">Name</label>
-              <input type="text" className="form-control" id="namereg" />
+              <input type="text" className="form-control" onChange={namereg} />
             </div>
           <div className="form-group">
             <label htmlFor="emailreg">Email address</label>
-            <input type="email" className="form-control" id="emailreg" />
+            <input type="email" className="form-control" onChange={emailreg} />
           </div>
           <div className="form-group mb-2">
             <label htmlFor="passwordreg">Password</label>
-            <input type="password" className="form-control" id="passwordreg" />
+            <input type="password" className="form-control" onChange={passwordreg} />
           </div>
           <div className="d-flex flex-row gap-1">
             <div>
@@ -69,7 +132,7 @@ function Landing () {
           <div className="form-text text-muted text-center mt-2 mb-3">
             <small>- or login with your google account -</small>
           </div>
-          <div className="g-signin2 mt-2" data-onsuccess={onSignIn}></div>
+          <div className="g-signin2 mt-2" data-onsuccess="onSignIn"></div>
           {/* <div id="errorlog">
           </div> */}
         </form>

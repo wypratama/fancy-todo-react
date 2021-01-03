@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, useCallback } from 'react'
 import axios from './axios'
 import ListAll from './components/list-all'
 
@@ -6,6 +6,7 @@ function Home () {
   const [todos, setTodos] = useState([])
   const [completed, setCompleted] = useState([])
   const [uncompleted, setUncompleted] = useState([])
+  const [missing, setMissing] = useState([])
   const [sort, setSort] = useState('all')
   const [toShow, setToShow] = useState()
   const showAll = e => {
@@ -19,6 +20,10 @@ function Home () {
   const showUncompleted = e => {
     e.preventDefault()
     setSort('uncompleted')
+  }
+  const showMissing = e => {
+    e.preventDefault()
+    setSort('missing')    
   }
   useEffect(()=> {
     axios({
@@ -39,9 +44,10 @@ function Home () {
           
       })
   }, [])
-  useEffect(() => {
+  useCallback(() => {
     setCompleted( todos.filter(el =>  el.status === true ) )
     setUncompleted( todos.filter(el =>  el.status === false ) )
+    setMissing( todos.filter(el =>  new Date(el.due_date) < new Date () ) )
     switch (sort) {
       case 'all':
         setToShow(todos)
@@ -52,10 +58,13 @@ function Home () {
       case 'uncompleted':
         setToShow(uncompleted)
         break;
+      case 'missing':
+        setToShow(missing)
+        break;
       default:
         break;
     }
-  }, [todos, sort, completed, uncompleted])
+  }, [todos, sort, completed, uncompleted, missing])
 
   return (
     <div className="mt-4" id="homepage">
@@ -70,8 +79,8 @@ function Home () {
           <button type="button" className="btn btn-success" onClick={showCompleted}>
               Completed <span className="badge bg-dark" id="complete-count">{completed.length}</span>
           </button>
-          <button type="button" className="btn btn-danger" id="missingtask">
-              Missing <span className="badge bg-dark" id="missing-count"></span>
+          <button type="button" className="btn btn-danger" onClick={showMissing}>
+              Missing <span className="badge bg-dark" id="missing-count">{missing.length}</span>
           </button>
       </div>
       {/* LIst To Do */}

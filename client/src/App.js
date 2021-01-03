@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import Landing from './Landing'
 import Home from './Home'
 import Navbar from './components/navbar'
+
 // import './App.css';
 
 function App() {
@@ -9,7 +10,7 @@ function App() {
   const [page, setPage] = useState('Landing')
   const [onLogin, setOnLogin] = useState(true)
   useEffect(()=> {
-    auth ? setPage(<Home />) : setPage(<Landing setPage={setPage} setOnLogin={setOnLogin} />)
+    auth ? setPage(<Home setPage={setPage} />) : setPage(<Landing setPage={setPage} setOnLogin={setOnLogin} />)
     auth && setOnLogin(false)
   }, [auth])
 

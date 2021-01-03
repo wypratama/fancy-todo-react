@@ -1,8 +1,8 @@
-import React, { useState, useEffect, useCallback } from 'react'
+import React, { useState, useEffect} from 'react'
 import axios from './axios'
 import ListAll from './components/list-all'
 
-function Home () {
+function Home (props) {
   const [todos, setTodos] = useState([])
   const [completed, setCompleted] = useState([])
   const [uncompleted, setUncompleted] = useState([])
@@ -35,7 +35,9 @@ function Home () {
       })
       .then (res => {
         setTodos(res.data.list)
-        // console.log(todos)
+        setCompleted( res.data.list.filter(el =>  el.status === true ) )
+        setUncompleted( res.data.list.filter(el =>  el.status === false ) )
+        setMissing( res.data.list.filter(el =>  new Date(el.due_date) < new Date () ) )
       })
       .catch(err => {
           console.log(err)
@@ -44,10 +46,7 @@ function Home () {
           
       })
   }, [])
-  useCallback(() => {
-    setCompleted( todos.filter(el =>  el.status === true ) )
-    setUncompleted( todos.filter(el =>  el.status === false ) )
-    setMissing( todos.filter(el =>  new Date(el.due_date) < new Date () ) )
+  useEffect(() => {
     switch (sort) {
       case 'all':
         setToShow(todos)
@@ -65,6 +64,8 @@ function Home () {
         break;
     }
   }, [todos, sort, completed, uncompleted, missing])
+
+
 
   return (
     <div className="mt-4" id="homepage">
@@ -88,7 +89,7 @@ function Home () {
           <table className="table table-hover w-100"  id="tabel-all">
               <tbody id="list">
               {toShow && toShow.map(el => {
-                return (<ListAll key={el.id} el={el}/>)
+                return (<ListAll key={el.id} el={el} setPage={props.setPage}/>)
               })}
               </tbody>
           </table>

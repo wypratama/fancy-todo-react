@@ -50,8 +50,8 @@ function Getsuggestion (props) {
           Success adding new task!
         </div>
         <button type="submit" className="btn btn-success mb-2">I'll give it a go!</button>
-        <button type="button" className="btn btn-warning mb-2" onClick="loadSuggest()">Get New One</button>
-        <button type="button" className="btn btn-danger mb-2" onClick={backHome}>Cancel</button>
+        <button type="button" className="btn btn-warning mb-2" >Get New One</button>
+        <button type="button" className="btn btn-danger mb-2" onClick={props.backHome}>Cancel</button>
         <div id="suggest-error">
         </div>
       </form>

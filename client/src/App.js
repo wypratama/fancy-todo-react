@@ -9,8 +9,11 @@ function App() {
   const auth = localStorage.getItem('access_token')
   const [page, setPage] = useState('Landing')
   const [onLogin, setOnLogin] = useState(true)
+  const backHome = () => {
+    setPage(<Home setPage={setPage} backHome={backHome} />)
+  }
   useEffect(()=> {
-    auth ? setPage(<Home setPage={setPage} />) : setPage(<Landing setPage={setPage} setOnLogin={setOnLogin} />)
+    auth ? setPage(<Home setPage={setPage} backHome={backHome} />) : setPage(<Landing setPage={setPage} setOnLogin={setOnLogin} />)
     auth && setOnLogin(false)
   }, [auth])
 
@@ -23,7 +26,7 @@ function App() {
               <div className="col-md-auto">
               <h1 className="mt-5 md-5" style={{textAlign: 'center'}}>To Do App</h1>
                {page}
-               {!onLogin && <Navbar setPage={setPage}/>}
+               {!onLogin && <Navbar setPage={setPage} backHome={backHome} page={page} />}
               </div>
               <div className="col col-lg-2">
               </div>

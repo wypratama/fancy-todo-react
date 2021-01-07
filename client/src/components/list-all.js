@@ -6,11 +6,11 @@ function listAll (props) {
   let dateLog = new Date (props.el.due_date)
   let date = dateLog.toDateString()
   let time = dateLog.toTimeString().split('GMT')[0]
-  const backHome = () => {
-    props.setPage(<Home />)
-  }
+  // const backHome = () => {
+  //   props.setPage(<Home />)
+  // }
   const editThis = () => {
-    props.setPage(<EditTask todo={props.el} setPage={props.setPage} />)
+    props.setPage(<EditTask todo={props.el} setPage={props.setPage} backHome={props.backHome} />)
   }
   return (
     <tr className='row'>

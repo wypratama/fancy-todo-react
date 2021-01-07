@@ -89,7 +89,7 @@ function Home (props) {
           <table className="table table-hover w-100"  id="tabel-all">
               <tbody id="list">
               {toShow && toShow.map(el => {
-                return (<ListAll key={el.id} el={el} setPage={props.setPage}/>)
+                return (<ListAll key={el.id} el={el} setPage={props.setPage} backHome={props.backHome}/>)
               })}
               </tbody>
           </table>
